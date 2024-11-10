@@ -100,7 +100,7 @@ def handle_sprites(archive, path, folder, scale, df, df_pak, df_flag, flag_img):
         return
     
     # skip dialogbox - coloring not supported yet by vcmi
-    if folder.upper() in ["dialgbox"]:
+    if folder.upper() in ["DIALGBOX"]:
         return
 
     # skip water + rivers special handling - paletteAnimation - not supported yet by vcmi
