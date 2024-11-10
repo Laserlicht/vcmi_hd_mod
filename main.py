@@ -24,14 +24,38 @@
 
 from extract import extract_assets
 from create_mod import create_mod
+from tkinter.filedialog import askdirectory
+from tkinter import messagebox
+import os
+import tempfile
+
+TEST = False
 
 def main():
-    input_path = "/tmp/test/Heroes of Might & Magic III - HD Edition"
-    temp_path = "/tmp/test/tmp"
-    output_path = "/tmp/test/out"
+    if TEST:
+        input_path = "/tmp/test/Heroes of Might & Magic III - HD Edition"
+        temp_path = "/tmp/test/tmp"
+        output_path = "/tmp/test/out"
 
-    extract_assets(input_path, temp_path)
-    create_mod(temp_path, output_path, ["2", "3"])
+        extract_assets(input_path, temp_path)
+        create_mod(temp_path, output_path, ["2", "3"])
+    else:
+        input_path = askdirectory()
+        if not isinstance(input_path, str) or not os.path.exists(os.path.join(input_path, "HOMM3 2.0.exe")):
+            messagebox.showinfo("showerror", "No Heroes III HD folder!")
+            return
+        output_path = askdirectory()
+        if not isinstance(output_path, str):
+            messagebox.showinfo("showerror", "No Output selected!")
+            return
+        
+        messagebox.showinfo("showinfo", "Conversation process started! Will run in background! It takes some time (~30min). You will be noticed after finish.") 
+        
+        with tempfile.TemporaryDirectory() as temp_path:
+            extract_assets(input_path, temp_path)
+            create_mod(temp_path, output_path, ["2", "3"])
+
+        messagebox.showinfo("showinfo", "Conversation process finished. Copy folder in output in mod directory of VCMI.")         
 
 if __name__ == '__main__':
     main()
