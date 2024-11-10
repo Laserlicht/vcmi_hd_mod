@@ -1,5 +1,14 @@
+name: VCMI-HD-Converter
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
 jobs:
-  pyinstaller-build:
+  pyinstaller-win:
     runs-on: windows-latest
     steps:
       - name: Create Executable
