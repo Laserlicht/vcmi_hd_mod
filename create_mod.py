@@ -156,6 +156,16 @@ def handle_sprites(archive, path, folder, scale, df, df_pak, df_flag, flag_img):
             img.save(img_byte_arr, format='PNG')
             data[name + "-overlay.png"] = img_byte_arr.getvalue()
 
+    # prison needs empty overlay
+    if folder.upper() in ["AVXPRSN0"]:
+        for item in list(data.keys()):
+            name = os.path.splitext(item)[0]
+            img = Image.open(io.BytesIO(data[item]))
+            img = Image.new(img.mode, (img.width, img.height), (255, 255, 255, 0))
+            img_byte_arr = io.BytesIO()
+            img.save(img_byte_arr, format='PNG')
+            data[name + "-overlay.png"] = img_byte_arr.getvalue()
+
     for file, content in data.items():
         file = file.replace(".shadow", "-shadow")
         archive.writestr("sprites" + scale + "x/" + folder + "/" + file, content)
