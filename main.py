@@ -51,7 +51,7 @@ def main():
             messagebox.showinfo("showerror", "No Output selected!")
             return
         
-        messagebox.showinfo("showinfo", "Conversation process will be started after pressing OK! Will run in background! It takes some time (~30min), be patient. You will be noticed after finish.") 
+        messagebox.showinfo("showinfo", "Conversation process will be started after pressing OK! Will run in background! It takes some time (~1hour), be patient. You will be noticed after finish.") 
         
         with tempfile.TemporaryDirectory() as temp_path:
             extract_assets(input_path, temp_path)
