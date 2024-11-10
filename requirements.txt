@@ -1,2 +1,2 @@
 pillow==10.2.0
-pandas==2.1.4+dfsg
+pandas==2.1.4
