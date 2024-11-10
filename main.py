@@ -40,10 +40,12 @@ def main():
         extract_assets(input_path, temp_path)
         create_mod(temp_path, output_path, ["2", "3"])
     else:
+        messagebox.showinfo("showinfo", "Please select install folder from Heroes III HD.") 
         input_path = askdirectory()
         if not isinstance(input_path, str) or not os.path.exists(os.path.join(input_path, "HOMM3 2.0.exe")):
             messagebox.showinfo("showerror", "No Heroes III HD folder!")
             return
+        messagebox.showinfo("showinfo", "Please select output folder for created mod.") 
         output_path = askdirectory()
         if not isinstance(output_path, str):
             messagebox.showinfo("showerror", "No Output selected!")
