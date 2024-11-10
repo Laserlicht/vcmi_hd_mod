@@ -28,12 +28,13 @@ import json
 import zipfile
 import pandas as pd
 from PIL import Image, ImageFilter, ImageEnhance
+from sd_lod_sprites_data import get_data
 
 def create_mod(in_folder, out_folder, scales):
     out_folder = os.path.join(out_folder, "hd_version")
     os.makedirs(out_folder, exist_ok=True)
 
-    df = pd.read_csv("sd_lod_sprites.csv", sep=";", header=0) # export from H3 Complete
+    df = get_data()
     df_pak = pd.read_csv(os.path.join(in_folder, "info.csv"), sep=";", header=None, names=range(20))
     df_flag = pd.read_csv(os.path.join(in_folder, "data", "spriteFlagsInfo.txt"), sep=" ", names=range(20), header=None)
 
