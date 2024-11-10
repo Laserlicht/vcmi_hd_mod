@@ -113,7 +113,7 @@ def handle_sprites(archive, path, folder, scale, df, df_pak, df_flag, flag_img):
     for item in data.keys():
         name = os.path.splitext(item.replace(".shadow", ""))[0].upper()
         df_tmp = df[df["imagename"].str.upper() == name]
-        df_pak_tmp = df_pak[df_pak[2].str.upper() == name]
+        df_pak_tmp = df_pak[(df_pak[2].str.upper() == name) & (df_pak[0].str.lower().str.contains("x" + scale))]
         if len(df_tmp) > 0:
             df_row = df_tmp.iloc[0]
             offset_sdhd_x = df_pak_tmp.iloc[0][4]
