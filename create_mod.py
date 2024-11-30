@@ -31,10 +31,18 @@ from PIL import Image, ImageFilter, ImageEnhance
 import multiprocessing
 from sd_lod_sprites_data import get_data
 
-def create_mod(in_folder, out_folder, scales):
+def create_mod(in_folder, out_folder):
     out_folder = os.path.join(out_folder, "hd_version")
     os.makedirs(out_folder, exist_ok=True)
 
+    with multiprocessing.Pool() as pool:
+        for result in pool.starmap(create_mod_task, [
+            (in_folder, out_folder, "2"),
+            (in_folder, out_folder, "3")
+        ]):
+            pass
+
+def create_mod_task(in_folder, out_folder, scale):
     df = get_data()
     df_pak = pd.read_csv(os.path.join(in_folder, "info.csv"), sep=";", header=None, names=range(20))
     df_flag = pd.read_csv(os.path.join(in_folder, "data", "spriteFlagsInfo.txt"), sep=" ", names=range(20), header=None)
@@ -51,14 +59,6 @@ def create_mod(in_folder, out_folder, scales):
     ]
     flag_img = [{x2:ImageEnhance.Brightness(y2).enhance(2.5) for x2, y2 in x.items()} for x in flag_img] #brighten flags
 
-    with multiprocessing.Pool() as pool:
-        for result in pool.starmap(create_mod_task, [
-            (in_folder, out_folder, "2", df, df_pak, df_flag, flag_img),
-            (in_folder, out_folder, "3", df, df_pak, df_flag, flag_img)
-        ]):
-            pass
-
-def create_mod_task(in_folder, out_folder, scale, df, df_pak, df_flag, flag_img):
     lang = os.listdir(os.path.join(in_folder, "bitmap_DXT_loc_x" + scale + ".pak"))[0]
 
     out_folder_main = os.path.join(out_folder, "mods", "x" + scale)

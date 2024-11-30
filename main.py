@@ -38,7 +38,7 @@ def main():
         output_path = "/tmp/test/out"
 
         extract_assets(input_path, temp_path)
-        create_mod(temp_path, output_path, ["2", "3"])
+        create_mod(temp_path, output_path)
     else:
         messagebox.showinfo("showinfo", "Please select install folder of Heroes III HD.") 
         input_path = askdirectory()
@@ -55,7 +55,7 @@ def main():
         
         with tempfile.TemporaryDirectory() as temp_path:
             extract_assets(input_path, temp_path)
-            create_mod(temp_path, output_path, ["2", "3"])
+            create_mod(temp_path, output_path)
 
         messagebox.showinfo("showinfo", "Conversation process finished. Copy folder in output in mod directory of VCMI.")         
 
