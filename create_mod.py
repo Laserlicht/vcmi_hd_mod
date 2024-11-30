@@ -155,7 +155,7 @@ def handle_sprites(archive, path, folder, scale, df, df_pak, df_flag, flag_img):
         creature_images = [x.upper() for x in ["CABEHE", "CADEVL", "CAELEM", "CALIZA", "CAMAGE", "cangel", "CAPEGS", "CBASIL", "CBDRGN", "CBDWAR", "cbehol", "Cbgog", "CBKNIG", "CBLORD", "CBTREE", "CBWLFR", "CCAVLR", "CCENTR", "CCERBU", "Ccgorg", "CCHAMP", "cchydr", "CCMCOR", "Ccrusd", "CcyclLor", "CCYCLR", "CDDRAG", "CDEVIL", "CDGOLE", "CDRFIR", "CDRFLY", "CDWARF", "CECENT", "CEELEM", "cefree", "cefres", "CELF", "Ceveye", "CFAMIL", "CFELEM", "CGARGO", "CGBASI", "CGDRAG", "CGENIE", "CGGOLE", "CGNOLL", "CGNOLM", "CGOBLI", "CGOG", "CGRELF", "CGREMA", "CGREMM", "CGRIFF", "CGTITA", "chalbd", "CHARPH", "CHARPY", "CHCBOW", "CHDRGN", "CHGOBL", "CHHOUN", "CHYDRA", "CIGOLE", "CIMP", "Citrog", "CLCBOW", "CLICH", "CLTITA", "CMAGE", "CMAGOG", "CMCORE", "Cmeduq", "Cmedus", "Cminok", "CMINOT", "Cmonkk", "CNAGA", "CNAGAG", "CNDRGN", "CNOSFE", "COGARG", "COGMAG", "COGRE", "COHDEM", "CORCCH", "CORC", "CPEGAS", "CPFIEN", "CPFOE", "CPKMAN", "CPLICH", "CPLIZA", "CRANGL", "CRDRGN", "Crgrif", "CROC", "CSGOLE", "CSKELE", "CSULTA", "Csword", "CTBIRD", "CTHDEM", "CTREE", "Ctrogl", "CUNICO", "CUWLFR", "CVAMP", "CWELEM", "CWIGHT", "CWRAIT", "CWSKEL", "CWUNIC", "CWYVER", "CWYVMN", "CYBEHE", "Czealt", "CZOMBI", "CZOMLO"]]
         if name.upper().startswith(tuple(creature_images)) and "shadow".upper() not in name.upper():
             img = Image.open(io.BytesIO(data[item]))
-            img = get_stroke(img, 2)
+            img = get_stroke(img, 2 if s == 2 else 3)
             img_byte_arr = io.BytesIO()
             img.save(img_byte_arr, format='PNG')
             data[name + "-overlay.png"] = img_byte_arr.getvalue()
