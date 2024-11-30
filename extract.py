@@ -27,6 +27,7 @@ import io
 import zlib
 import shutil
 from PIL import Image
+import multiprocessing
 
 def extract_assets(in_folder, out_folder, save_dds=False):
     data_dir = os.path.join(in_folder, "data")
@@ -35,16 +36,25 @@ def extract_assets(in_folder, out_folder, save_dds=False):
     if os.path.isfile(os.path.join(out_folder, "info.csv")):
         os.remove(os.path.join(out_folder, "info.csv"))
 
-    for scale in ["2", "3"]:
-        for filename in os.listdir(data_dir):
-            if filename.lower().endswith(".pak") and "x" + scale in filename:
-                full_name = os.path.join(data_dir, filename)
-                __extract_pak(full_name, "", out_folder, save_dds)
-        for filename in os.listdir(os.path.join(data_dir, 'LOC', list(os.listdir(os.path.join(data_dir, 'LOC')))[0])):
-            if filename.lower().endswith(".pak") and "x" + scale in filename:
-                lang = list(os.listdir(os.path.join(data_dir, 'LOC')))[0]
-                full_name = os.path.join(data_dir, 'LOC', lang, filename)
-                __extract_pak(full_name, lang, out_folder, save_dds)
+    with multiprocessing.Pool() as pool:
+        for result in pool.starmap(extract_task, [
+            ("2", "bitmap", data_dir, out_folder, save_dds),
+            ("3", "bitmap", data_dir, out_folder, save_dds),
+            ("2", "sprite", data_dir, out_folder, save_dds),
+            ("3", "sprite", data_dir, out_folder, save_dds)
+        ]):
+            pass
+
+def extract_task(scale, contains, data_dir, out_folder, save_dds):
+    for filename in os.listdir(data_dir):
+        if filename.lower().endswith(".pak") and "x" + scale in filename and contains in filename:
+            full_name = os.path.join(data_dir, filename)
+            __extract_pak(full_name, "", out_folder, save_dds)
+    for filename in os.listdir(os.path.join(data_dir, 'LOC', list(os.listdir(os.path.join(data_dir, 'LOC')))[0])):
+        if filename.lower().endswith(".pak") and "x" + scale in filename and contains in filename:
+            lang = list(os.listdir(os.path.join(data_dir, 'LOC')))[0]
+            full_name = os.path.join(data_dir, 'LOC', lang, filename)
+            __extract_pak(full_name, lang, out_folder, save_dds)
 
 def __extract_pak(file, lang, out_folder, save_dds):
     with open(file, 'rb') as f:

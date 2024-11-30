@@ -28,6 +28,7 @@ import json
 import zipfile
 import pandas as pd
 from PIL import Image, ImageFilter, ImageEnhance
+import multiprocessing
 from sd_lod_sprites_data import get_data
 
 def create_mod(in_folder, out_folder, scales):
@@ -50,37 +51,44 @@ def create_mod(in_folder, out_folder, scales):
     ]
     flag_img = [{x2:ImageEnhance.Brightness(y2).enhance(2.5) for x2, y2 in x.items()} for x in flag_img] #brighten flags
 
-    for scale in scales:
-        lang = os.listdir(os.path.join(in_folder, "bitmap_DXT_loc_x" + scale + ".pak"))[0]
+    with multiprocessing.Pool() as pool:
+        for result in pool.starmap(create_mod_task, [
+            (in_folder, out_folder, "2", df, df_pak, df_flag, flag_img),
+            (in_folder, out_folder, "3", df, df_pak, df_flag, flag_img)
+        ]):
+            pass
 
-        out_folder_main = os.path.join(out_folder, "mods", "x" + scale)
-        os.makedirs(out_folder_main, exist_ok=True)
-        out_folder_translation = os.path.join(out_folder, "mods", "x" + scale + "_translation_" + lang.lower())
-        os.makedirs(out_folder_translation, exist_ok=True)
+def create_mod_task(in_folder, out_folder, scale, df, df_pak, df_flag, flag_img):
+    lang = os.listdir(os.path.join(in_folder, "bitmap_DXT_loc_x" + scale + ".pak"))[0]
 
-        with open(os.path.join(out_folder, "mod.json"), "w") as f:
-            f.write(create_mod_config())
-        with open(os.path.join(out_folder_main, "mod.json"), "w") as f:
-            f.write(create_main_mod_config(scale))
-        with open(os.path.join(out_folder_translation, "mod.json"), "w") as f:
-            f.write(create_lang_mod_config(scale, lang))
+    out_folder_main = os.path.join(out_folder, "mods", "x" + scale)
+    os.makedirs(out_folder_main, exist_ok=True)
+    out_folder_translation = os.path.join(out_folder, "mods", "x" + scale + "_translation_" + lang.lower())
+    os.makedirs(out_folder_translation, exist_ok=True)
 
-        for name, destination in { "bitmap_DXT_com_x" + scale + ".pak": out_folder_main, "bitmap_DXT_loc_x" + scale + ".pak": out_folder_translation }.items():
-            with zipfile.ZipFile(os.path.join(destination, "content.zip"), mode="w", compression=zipfile.ZIP_STORED) as archive:
-                path = os.path.join(in_folder, name, lang if "loc" in name else "")
-                for file in os.listdir(path):
-                    handle_bitmaps(archive, path, file, scale)
+    with open(os.path.join(out_folder, "mod.json"), "w") as f:
+        f.write(create_mod_config())
+    with open(os.path.join(out_folder_main, "mod.json"), "w") as f:
+        f.write(create_main_mod_config(scale))
+    with open(os.path.join(out_folder_translation, "mod.json"), "w") as f:
+        f.write(create_lang_mod_config(scale, lang))
 
-        for name, destination in { "sprite_DXT_com_x" + scale + ".pak": out_folder_main, "sprite_DXT_loc_x" + scale + ".pak": out_folder_translation }.items():
-            with zipfile.ZipFile(os.path.join(destination, "content.zip"), mode="a", compression=zipfile.ZIP_STORED) as archive:
-                path = os.path.join(in_folder, name, lang if "loc" in name else "")
+    for name, destination in { "bitmap_DXT_com_x" + scale + ".pak": out_folder_main, "bitmap_DXT_loc_x" + scale + ".pak": out_folder_translation }.items():
+        with zipfile.ZipFile(os.path.join(destination, "content.zip"), mode="w", compression=zipfile.ZIP_STORED) as archive:
+            path = os.path.join(in_folder, name, lang if "loc" in name else "")
+            for file in os.listdir(path):
+                handle_bitmaps(archive, path, file, scale)
 
-                grouped_df = df.groupby('defname')
-                for name, group in grouped_df:
-                    folders = [x.upper() for x in os.listdir(path)]
-                    if name.upper() in folders:
-                        folder = os.listdir(path)[folders.index(name.upper())]
-                        handle_sprites(archive, path, folder, scale, group, df_pak[df_pak[1].str.upper() == folder.upper()], df_flag, flag_img)
+    for name, destination in { "sprite_DXT_com_x" + scale + ".pak": out_folder_main, "sprite_DXT_loc_x" + scale + ".pak": out_folder_translation }.items():
+        with zipfile.ZipFile(os.path.join(destination, "content.zip"), mode="a", compression=zipfile.ZIP_STORED) as archive:
+            path = os.path.join(in_folder, name, lang if "loc" in name else "")
+
+            grouped_df = df.groupby('defname')
+            for name, group in grouped_df:
+                folders = [x.upper() for x in os.listdir(path)]
+                if name.upper() in folders:
+                    folder = os.listdir(path)[folders.index(name.upper())]
+                    handle_sprites(archive, path, folder, scale, group, df_pak[df_pak[1].str.upper() == folder.upper()], df_flag, flag_img)
 
 def handle_bitmaps(archive, path, file, scale):
     name = os.path.splitext(file)[0]
@@ -156,8 +164,8 @@ def handle_sprites(archive, path, folder, scale, df, df_pak, df_flag, flag_img):
             img.save(img_byte_arr, format='PNG')
             data[name + "-overlay.png"] = img_byte_arr.getvalue()
 
-    # prison needs empty overlay
-    if folder.upper() in ["AVXPRSN0"]:
+    # prison & elem conflux needs empty overlay
+    if folder.upper() in ["AVXPRSN0", "AVGELEM0"]:
         for item in list(data.keys()):
             name = os.path.splitext(item)[0]
             img = Image.open(io.BytesIO(data[item]))
