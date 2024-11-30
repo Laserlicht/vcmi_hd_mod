@@ -1,15 +1,14 @@
 import numpy as np
+from scipy.ndimage import maximum_filter, minimum_filter
 from PIL import Image
 
-def get_stroke(origin_image, border):
-    img = np.asarray(origin_image)
+def get_stroke(origin_image, size):
+    img = np.asarray(origin_image).copy()
     img_alpha = img[:, :, 3]
-    img_new = np.asarray(Image.new(origin_image.mode, (origin_image.width, origin_image.height), (255, 255, 255, 0))).copy()
-    for x in range(img_alpha.shape[0]):
-        for y in range(img_alpha.shape[1]):
-            area = img_alpha[x-border:x+border, y-border:y+border]
-            if area.shape[0] == 0 or area.shape[1] == 0:
-                continue
-
-            img_new[x, y] = (255, 255, 255, area.max() - area.min())
-    return Image.fromarray(np.uint8(img_new))
+    img_max = maximum_filter(img_alpha, size=size, mode='mirror')
+    img_min = minimum_filter(img_alpha, size=size, mode='mirror')
+    img[:, :, 0] = 255
+    img[:, :, 1] = 255
+    img[:, :, 2] = 255
+    img[:, :, 3] = img_max - img_min
+    return Image.fromarray(np.uint8(img))
