@@ -54,9 +54,13 @@ def main():
         
         messagebox.showinfo("showinfo", "Conversation process will be started after pressing OK! Will run in background! It takes some time (~1hour), be patient. You will be noticed after finish.") 
         
-        with tempfile.TemporaryDirectory() as temp_path:
-            extract_assets(input_path, temp_path)
-            create_mod(temp_path, output_path)
+        temp_path = tempfile.TemporaryDirectory()
+        extract_assets(input_path, temp_path)
+        create_mod(temp_path, output_path)
+        try:
+            temp_path.cleanup()
+        except:
+            pass
 
         messagebox.showinfo("showinfo", "Conversation process finished. Copy folder in output in mod directory of VCMI.")         
 
