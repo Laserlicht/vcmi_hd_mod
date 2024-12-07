@@ -27,6 +27,7 @@ from create_mod import create_mod
 from tkinter.filedialog import askdirectory
 from tkinter import messagebox
 import os
+import multiprocessing
 import tempfile
 
 TEST = False
@@ -60,4 +61,5 @@ def main():
         messagebox.showinfo("showinfo", "Conversation process finished. Copy folder in output in mod directory of VCMI.")         
 
 if __name__ == '__main__':
+    multiprocessing.freeze_support()
     main()
