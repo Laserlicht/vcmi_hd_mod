@@ -45,7 +45,13 @@ def create_mod(in_folder, out_folder):
 
 def create_mod_task(in_folder, out_folder, scale):
     df = get_data()
-    df_pak = pd.read_csv(os.path.join(in_folder, "info.csv"), sep=";", header=None, names=range(20))
+    df_pak = None
+    for filename in os.listdir(in_folder):
+        if filename.endswith("-info.csv"):
+            if df_pak is None:
+                df_pak = pd.read_csv(os.path.join(in_folder, filename), sep=";", header=None, names=range(20))
+            else:
+                df_pak = pd.concat([df_pak, pd.read_csv(os.path.join(in_folder, filename), sep=";", header=None, names=range(20))])
     df_flag = pd.read_csv(os.path.join(in_folder, "data", "spriteFlagsInfo.txt"), sep=" ", names=range(20), header=None)
 
     # flag images

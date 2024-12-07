@@ -33,9 +33,6 @@ def extract_assets(in_folder, out_folder, save_dds=False):
     data_dir = os.path.join(in_folder, "data")
     shutil.copytree(data_dir, os.path.join(out_folder, "data"), dirs_exist_ok=True)
 
-    if os.path.isfile(os.path.join(out_folder, "info.csv")):
-        os.remove(os.path.join(out_folder, "info.csv"))
-
     with multiprocessing.Pool() as pool:
         for result in pool.starmap(extract_task, [
             ("2", "bitmap", data_dir, out_folder, save_dds),
@@ -57,6 +54,9 @@ def extract_task(scale, contains, data_dir, out_folder, save_dds):
             __extract_pak(full_name, lang, out_folder, save_dds)
 
 def __extract_pak(file, lang, out_folder, save_dds):
+    if os.path.isfile(os.path.join(out_folder, file + "-info.csv")):
+        os.remove(os.path.join(out_folder, file + "-info.csv"))
+
     with open(file, 'rb') as f:
         f.read(4) # dummy
         info_offset = int.from_bytes(f.read(4), byteorder='little')
@@ -148,7 +148,7 @@ def __extract_images(file, name, image_config, data, lang, out_folder, save_dds)
                 img_shadow_crop = img_shadow_crop.crop((img_shadow_x, img_shadow_y, img_shadow_x+img_shadow_width, img_shadow_y+img_shadow_height))
                 img_shadow_crop = img_shadow_crop.rotate(-90 * img_shadow_rotation, expand=True)
 
-            with open(os.path.join(out_folder, "info.csv"), "a") as f:
+            with open(os.path.join(out_folder, file + "-info.csv"), "a") as f:
                 f.write("%s;%s;%s\r\n"%(file, name, line.replace(' ', ';')))
 
             if 'sprite' in file.lower():
