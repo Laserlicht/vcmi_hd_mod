@@ -41,7 +41,7 @@ def main():
         extract_assets(input_path, temp_path)
         create_mod(temp_path, output_path)
     else:
-        messagebox.showinfo("showinfo", "Please select install folder of Heroes III HD.") 
+        messagebox.showinfo("showinfo", "Please select install folder of Heroes III HD.")
         input_path = askdirectory()
         if not isinstance(input_path, str) or not os.path.exists(os.path.join(input_path, "HOMM3 2.0.exe")):
             messagebox.showinfo("showerror", "No Heroes III HD folder!")
@@ -55,8 +55,8 @@ def main():
         messagebox.showinfo("showinfo", "Conversation process will be started after pressing OK! Will run in background! It takes some time (~1hour), be patient. You will be noticed after finish.") 
         
         temp_path = tempfile.TemporaryDirectory()
-        extract_assets(input_path, temp_path)
-        create_mod(temp_path, output_path)
+        extract_assets(input_path, temp_path.name)
+        create_mod(temp_path.name, output_path)
         try:
             temp_path.cleanup()
         except:
