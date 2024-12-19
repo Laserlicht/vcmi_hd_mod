@@ -21,14 +21,14 @@ This repository provides a set of tools to extract assets from the [*Heroes of M
 
 ### B. Python Script
 
-1. **Clone this Repository**
+1. Clone this Repository
 
    ```bash
    git clone https://github.com/yourusername/homm3-hd-mod-vcmi.git
    cd homm3-hd-mod-vcmi
    ```
 
-2. **Install Requirements**
+2. Install Requirements
 
    Ensure the following Python dependencies are installed:
 
@@ -46,13 +46,13 @@ This repository provides a set of tools to extract assets from the [*Heroes of M
    ```
 
 
-3. **Run the Script**
+3. Run the Script
 
    ```bash
    python main.py
    ```
 
-4. **Follow the Prompts**
+4. Follow the Prompts
 
    - Select the installation folder of *Heroes of Might & Magic III - HD Edition*.
    - Choose the output folder for the generated mod.
