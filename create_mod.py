@@ -73,11 +73,11 @@ def create_mod_task(in_folder, out_folder, scale):
     out_folder_translation = os.path.join(out_folder, "mods", "x" + scale + "_translation_" + lang.lower())
     os.makedirs(out_folder_translation, exist_ok=True)
 
-    with open(os.path.join(out_folder, "mod.json"), "w") as f:
+    with open(os.path.join(out_folder, "mod.json"), "w", encoding="utf-8") as f:
         f.write(create_mod_config())
-    with open(os.path.join(out_folder_main, "mod.json"), "w") as f:
+    with open(os.path.join(out_folder_main, "mod.json"), "w", encoding="utf-8") as f:
         f.write(create_main_mod_config(scale))
-    with open(os.path.join(out_folder_translation, "mod.json"), "w") as f:
+    with open(os.path.join(out_folder_translation, "mod.json"), "w", encoding="utf-8") as f:
         f.write(create_lang_mod_config(scale, lang))
 
     for name, destination in { "bitmap_DXT_com_x" + scale + ".pak": out_folder_main, "bitmap_DXT_loc_x" + scale + ".pak": out_folder_translation }.items():
@@ -183,12 +183,21 @@ def handle_sprites(archive, path, folder, scale, df, df_pak, df_flag, flag_img):
 
 def create_mod_config():
     conf = {
+        "name": "Heroes III HD Edition",
+        "description": "Extracted resources from the official Heroes of Might & Magic III - HD Edition to make them usable in VCMI.",
         "author": "Ubisoft",
         "contact": "vcmi.eu",
-        "description": "Extracted resources from official Heroes HD to make it usable on VCMI",
         "modType": "Graphical",
-        "name": "Heroes HD (official)",
-        "version": "1.0"
+        "version": "1.0",
+        
+        "czech" : {
+            "name": "Heroes III HD Edition",
+            "description": "Extrahované zdroje z oficiální edice Heroes of Might & Magic III - HD Edition, které je možné použít ve VCMI."
+        },
+        "polish": {
+            "name": "Heroes III HD Edition",
+            "description": "Wyodrębnione zasoby z oficjalnej edycji Heroes of Might & Magic III - HD Edition, które można używać w VCMI."
+        }
     }
     return json.dumps(conf, indent=4, ensure_ascii=False)
 
@@ -221,7 +230,7 @@ def create_lang_mod_config(scale, language):
         "contact": "vcmi.eu",
         "description": "Translated resources (x" + scale + ")",
         "modType": "Translation",
-        "name": "HD Localisation (" + languages[language] + ") (x" + scale + ")",
+        "name": "HD Localization (" + languages[language] + ") (x" + scale + ")",
         "version": "1.0",
         "language": languages[language]
     }
