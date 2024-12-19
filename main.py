@@ -59,6 +59,10 @@ class Progress(Tk):
                 time.sleep(5)
         threading.Thread(target=update, args=(destpaths,)).start()
 
+def progresswindow(destpaths):
+    app = Progress(destpaths)
+    app.mainloop()
+            
 def main():
     if TEST:
         input_path = "/tmp/test/Heroes of Might & Magic III - HD Edition"
@@ -83,9 +87,6 @@ def main():
 
         temp_path = tempfile.TemporaryDirectory()
 
-        def progresswindow(destpaths):
-            app = Progress(destpaths)
-            app.mainloop()
         p = multiprocessing.Process(target=progresswindow, args=([temp_path.name, output_path],))
         p.start()
 
