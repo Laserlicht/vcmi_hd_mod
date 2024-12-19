@@ -41,7 +41,7 @@ def main():
         extract_assets(input_path, temp_path)
         create_mod(temp_path, output_path)
     else:
-        messagebox.showinfo("showinfo", "Please select the installation folder for Heroes Heroes of Might & Magic III - HD Edition.")
+        messagebox.showinfo("showinfo", "Please select the installation folder for Heroes of Might & Magic III - HD Edition.")
         input_path = askdirectory()
         if not isinstance(input_path, str) or not os.path.exists(os.path.join(input_path, "HOMM3 2.0.exe")):
             messagebox.showinfo("showerror", "Heroes of Might & Magic III - HD Edition folder not found!")
