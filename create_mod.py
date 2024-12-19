@@ -193,6 +193,10 @@ def create_mod_config():
         "czech" : {
             "name": "Heroes III HD Edition",
             "description": "Extrahované zdroje z oficiální edice Heroes of Might & Magic III - HD Edition, které je možné použít ve VCMI."
+        },
+        "polish": {
+            "name": "Heroes III HD Edition",
+            "description": "Wyodrębnione zasoby z oficjalnej edycji Heroes of Might & Magic III - HD Edition, które można używać w VCMI."
         }
     }
     return json.dumps(conf, indent=4, ensure_ascii=False)
