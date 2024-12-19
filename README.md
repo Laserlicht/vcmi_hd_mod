@@ -16,7 +16,8 @@ This repository provides a set of tools to extract assets from the [*Heroes of M
 3. Follow the prompts:
    - Select the installation folder of *Heroes of Might & Magic III - HD Edition*.
    - Choose the output folder for the generated mod.
-4. After the process completes:
+4. The process may take **up to 1 hour**, depending on your system's performance. Please be patient.
+5. After the process completes:
    - Copy the generated mod files to the `Mods` directory of your VCMI installation.
 
 ### B. Python Script
@@ -57,5 +58,7 @@ This repository provides a set of tools to extract assets from the [*Heroes of M
    - Select the installation folder of *Heroes of Might & Magic III - HD Edition*.
    - Choose the output folder for the generated mod.
 
-5. After the process completes:
+5. The process may take **up to 1 hour**, depending on your system's performance. Please be patient.
+
+6. After the process completes:
    - Copy the generated mod files to the `Mods` directory of your VCMI installation.
