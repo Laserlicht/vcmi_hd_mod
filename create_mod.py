@@ -183,12 +183,17 @@ def handle_sprites(archive, path, folder, scale, df, df_pak, df_flag, flag_img):
 
 def create_mod_config():
     conf = {
+        "name": "Heroes III HD Edition",
+        "description": "Extracted resources from the official Heroes of Might & Magic III - HD Edition to make them usable in VCMI.",
         "author": "Ubisoft",
         "contact": "vcmi.eu",
-        "description": "Extracted resources from official Heroes HD to make it usable on VCMI",
         "modType": "Graphical",
-        "name": "Heroes HD (official)",
-        "version": "1.0"
+        "version": "1.0",
+        
+        "czech" : {
+            "name": "Heroes III HD Edition",
+            "description": "Extrahované zdroje z oficiální edice Heroes of Might & Magic III - HD Edition, které je možné použít ve VCMI."
+        }
     }
     return json.dumps(conf, indent=4, ensure_ascii=False)
 
