@@ -73,11 +73,11 @@ def create_mod_task(in_folder, out_folder, scale):
     out_folder_translation = os.path.join(out_folder, "mods", "x" + scale + "_translation_" + lang.lower())
     os.makedirs(out_folder_translation, exist_ok=True)
 
-    with open(os.path.join(out_folder, "mod.json"), "w") as f:
+    with open(os.path.join(out_folder, "mod.json"), "w", encoding="utf-8") as f:
         f.write(create_mod_config())
-    with open(os.path.join(out_folder_main, "mod.json"), "w") as f:
+    with open(os.path.join(out_folder_main, "mod.json"), "w", encoding="utf-8") as f:
         f.write(create_main_mod_config(scale))
-    with open(os.path.join(out_folder_translation, "mod.json"), "w") as f:
+    with open(os.path.join(out_folder_translation, "mod.json"), "w", encoding="utf-8") as f:
         f.write(create_lang_mod_config(scale, lang))
 
     for name, destination in { "bitmap_DXT_com_x" + scale + ".pak": out_folder_main, "bitmap_DXT_loc_x" + scale + ".pak": out_folder_translation }.items():
