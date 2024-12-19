@@ -226,7 +226,7 @@ def create_lang_mod_config(scale, language):
         "contact": "vcmi.eu",
         "description": "Translated resources (x" + scale + ")",
         "modType": "Translation",
-        "name": "HD Localisation (" + languages[language] + ") (x" + scale + ")",
+        "name": "HD Localization (" + languages[language] + ") (x" + scale + ")",
         "version": "1.0",
         "language": languages[language]
     }
