@@ -27,7 +27,7 @@ import io
 import json
 import zipfile
 import pandas as pd
-from PIL import Image, ImageFilter, ImageEnhance
+from PIL import Image, ImageEnhance
 import multiprocessing
 from sd_lod_sprites_data import get_data
 from helper import get_stroke
