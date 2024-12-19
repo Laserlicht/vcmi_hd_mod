@@ -41,18 +41,18 @@ def main():
         extract_assets(input_path, temp_path)
         create_mod(temp_path, output_path)
     else:
-        messagebox.showinfo("showinfo", "Please select install folder of Heroes III HD.")
+        messagebox.showinfo("showinfo", "Please select the installation folder for Heroes Heroes of Might & Magic III - HD Edition.")
         input_path = askdirectory()
         if not isinstance(input_path, str) or not os.path.exists(os.path.join(input_path, "HOMM3 2.0.exe")):
-            messagebox.showinfo("showerror", "No Heroes III HD folder!")
+            messagebox.showinfo("showerror", "Heroes of Might & Magic III - HD Edition folder not found!")
             return
-        messagebox.showinfo("showinfo", "Please select output folder for created mod.") 
+        messagebox.showinfo("showinfo", "Please select the output folder for the created mod.") 
         output_path = askdirectory()
         if not isinstance(output_path, str):
-            messagebox.showinfo("showerror", "No Output selected!")
+            messagebox.showinfo("showerror", "No output folder selected!")
             return
         
-        messagebox.showinfo("showinfo", "Conversation process will be started after pressing OK! Will run in background! It takes some time (~1hour), be patient. You will be noticed after finish.") 
+        messagebox.showinfo("showinfo", "The conversion process will start after pressing OK. It will run in the background and may take some time (~1 hour). Please be patient. You will be notified upon completion.") 
         
         temp_path = tempfile.TemporaryDirectory()
         extract_assets(input_path, temp_path.name)
@@ -62,7 +62,7 @@ def main():
         except:
             pass
 
-        messagebox.showinfo("showinfo", "Conversation process finished. Copy folder in output in mod directory of VCMI.")         
+        messagebox.showinfo("showinfo", "The conversion process is complete. Please copy the folder in the output directory to the mod directory of VCMI.")         
 
 if __name__ == '__main__':
     multiprocessing.freeze_support()
