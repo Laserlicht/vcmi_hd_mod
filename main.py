@@ -25,7 +25,7 @@
 from extract import extract_assets
 from create_mod import create_mod
 from tkinter.filedialog import askdirectory
-from tkinter import messagebox, Label, Tk, HORIZONTAL
+from tkinter import messagebox, Label, Tk, HORIZONTAL, IntVar
 from tkinter.ttk import Progressbar
 import os
 import multiprocessing
@@ -45,8 +45,10 @@ class Progress(Tk):
         self.resizable(0, 0)
         self.eval('tk::PlaceWindow . center')
 
+        progress = IntVar()
+        
         self.label = Label(self, text="HD Edition Mod is created... Please wait!")
-        self.progress = Progressbar(self, orient=HORIZONTAL, length=200)
+        self.progress = Progressbar(self, orient=HORIZONTAL, length=200, maximum=1000, variable=progress)
         self.label.pack(pady=10, padx=10)
         self.progress.pack(pady=10, padx=10)
 
@@ -56,7 +58,7 @@ class Progress(Tk):
                     max_size = 4_793_170_141 + 3_698_241_492
                     size = sum([sum(f.stat().st_size for f in Path(destpath).glob('**/*') if f.is_file()) for destpath in destpaths])
                     percent = size / max_size
-                    self.progress.set(min(percent, 0.999999) * 100)
+                    progress.set(min(percent, 0.999999) * 1000)
                     time.sleep(5)
             except: pass
         threading.Thread(target=update, args=(destpaths,)).start()
@@ -99,7 +101,9 @@ def main():
         except:
             pass
 
-        p.kill()
+        try:
+            p.kill()
+        except: pass
 
         messagebox.showinfo(TITLE, "The conversion process is complete. Please copy the folder in the output directory to the mod directory of VCMI.")         
 
