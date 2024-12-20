@@ -52,12 +52,12 @@ class Progress(Tk):
 
         def update(destpaths):
             try:
-            while True:
-                max_size = 4_793_170_141 + 3_698_241_492
-                size = sum([sum(f.stat().st_size for f in Path(destpath).glob('**/*') if f.is_file()) for destpath in destpaths])
-                percent = size / max_size
-                self.progress.step(percent)
-                time.sleep(5)
+                while True:
+                    max_size = 4_793_170_141 + 3_698_241_492
+                    size = sum([sum(f.stat().st_size for f in Path(destpath).glob('**/*') if f.is_file()) for destpath in destpaths])
+                    percent = size / max_size
+                    self.progress.step(percent)
+                    time.sleep(5)
             except: pass
         threading.Thread(target=update, args=(destpaths,)).start()
 
