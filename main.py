@@ -25,48 +25,13 @@
 from extract import extract_assets
 from create_mod import create_mod
 from tkinter.filedialog import askdirectory
-from tkinter import messagebox, Label, Tk, HORIZONTAL, IntVar
-from tkinter.ttk import Progressbar
+from tkinter import messagebox
 import os
 import multiprocessing
 import tempfile
-import threading
-import time
-from pathlib import Path
 
 TEST = False
-TITLE = "Heroes of Might & Magic III - HD Edition Mod Creator for VCMI"
 
-class Progress(Tk):
-    def __init__(self, destpaths):
-        Tk.__init__(self)
-
-        self.title(TITLE)
-        self.resizable(0, 0)
-        self.eval('tk::PlaceWindow . center')
-
-        progress = IntVar()
-        
-        self.label = Label(self, text="HD Edition Mod is created... Please wait!")
-        self.progress = Progressbar(self, orient=HORIZONTAL, length=200, maximum=1000, variable=progress)
-        self.label.pack(pady=10, padx=10)
-        self.progress.pack(pady=10, padx=10)
-
-        def update(destpaths):
-            try:
-                while True:
-                    max_size = 4_793_170_141 + 3_698_241_492
-                    size = sum([sum(f.stat().st_size for f in Path(destpath).glob('**/*') if f.is_file()) for destpath in destpaths])
-                    percent = size / max_size
-                    progress.set(min(percent, 0.999999) * 1000)
-                    time.sleep(5)
-            except: pass
-        threading.Thread(target=update, args=(destpaths,)).start()
-
-def progresswindow(destpaths):
-    app = Progress(destpaths)
-    app.mainloop()
-            
 def main():
     if TEST:
         input_path = "/tmp/test/Heroes of Might & Magic III - HD Edition"
@@ -76,24 +41,20 @@ def main():
         extract_assets(input_path, temp_path)
         create_mod(temp_path, output_path)
     else:
-        messagebox.showinfo(TITLE, "Please select the installation folder of Heroes of Might & Magic III - HD Edition.")
+        messagebox.showinfo("Heroes of Might & Magic III - HD Edition Mod Creator for VCMI", "Please select the installation folder of Heroes of Might & Magic III - HD Edition.")
         input_path = askdirectory()
         if not isinstance(input_path, str) or not os.path.exists(os.path.join(input_path, "HOMM3 2.0.exe")):
-            messagebox.showinfo(TITLE, "Heroes of Might & Magic III - HD Edition folder not found!")
+            messagebox.showinfo("Heroes of Might & Magic III - HD Edition Mod Creator for VCMI", "Heroes of Might & Magic III - HD Edition folder not found!")
             return
-        messagebox.showinfo(TITLE, "Please select the output folder for the created mod.") 
+        messagebox.showinfo("Heroes of Might & Magic III - HD Edition Mod Creator for VCMI", "Please select the output folder for the created mod.") 
         output_path = askdirectory()
         if not isinstance(output_path, str):
-            messagebox.showinfo(TITLE, "No output folder selected!")
+            messagebox.showinfo("Heroes of Might & Magic III - HD Edition Mod Creator for VCMI", "No output folder selected!")
             return
         
-        messagebox.showinfo(TITLE, "The conversion process will start after pressing OK. It may take some time (~1 hour). Please be patient.") 
-
+        messagebox.showinfo("Heroes of Might & Magic III - HD Edition Mod Creator for VCMI", "The conversion process will start after pressing OK. It will run in the background and may take some time (~1 hour). Please be patient. You will be notified upon completion.") 
+        
         temp_path = tempfile.TemporaryDirectory()
-
-        p = multiprocessing.Process(target=progresswindow, args=([temp_path.name, os.path.join(output_path, "hd_version")],))
-        p.start()
-
         extract_assets(input_path, temp_path.name)
         create_mod(temp_path.name, output_path)
         try:
@@ -101,11 +62,7 @@ def main():
         except:
             pass
 
-        try:
-            p.kill()
-        except: pass
-
-        messagebox.showinfo(TITLE, "The conversion process is complete. Please copy the folder in the output directory to the mod directory of VCMI.")         
+        messagebox.showinfo("Heroes of Might & Magic III - HD Edition Mod Creator for VCMI", "The conversion process is complete. Please copy the folder in the output directory to the mod directory of VCMI.")         
 
 if __name__ == '__main__':
     multiprocessing.freeze_support()
