@@ -56,7 +56,7 @@ class Progress(Tk):
                     max_size = 4_793_170_141 + 3_698_241_492
                     size = sum([sum(f.stat().st_size for f in Path(destpath).glob('**/*') if f.is_file()) for destpath in destpaths])
                     percent = size / max_size
-                    self.progress.step(percent)
+                    self.progress.step(min(percent, 0.999999))
                     time.sleep(5)
             except: pass
         threading.Thread(target=update, args=(destpaths,)).start()
@@ -89,7 +89,7 @@ def main():
 
         temp_path = tempfile.TemporaryDirectory()
 
-        p = multiprocessing.Process(target=progresswindow, args=([temp_path.name, output_path],))
+        p = multiprocessing.Process(target=progresswindow, args=([temp_path.name, os.path.join(output_path, "hd_version")],))
         p.start()
 
         extract_assets(input_path, temp_path.name)
