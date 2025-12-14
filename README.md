@@ -1,3 +1,11 @@
+## Edit:
+## Archived... VCMI 1.7 does have native support for HD Edition data!
+\
+\
+\
+\
+...
+
 # Heroes of Might & Magic III - HD Edition Mod Creator for VCMI
 
 This repository provides a set of tools to extract assets from the [*Heroes of Might & Magic III - HD Edition*](https://store.steampowered.com/app/297000/Heroes_of_Might__Magic_III__HD_Edition/) and convert them into a mod format compatible with [VCMI](https://vcmi.eu/).
